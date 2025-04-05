@@ -1,12 +1,13 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const isDevelopment = process.env.NODE_ENV === 'development';
 
 const host = 'localhost';
 const port = 8080;
 
 module.exports = {
-    mode: 'development',
+    mode: process.env.NODE_ENV || 'development',
     context: path.resolve(__dirname, 'src'),
     target: 'web',
     entry: {
@@ -17,7 +18,9 @@ module.exports = {
     output: {
         filename: '[name]-[contenthash:6].bundle.js',
         path: path.join(__dirname, './build/www'),
-        publicPath: `http://${host}:${port}/`
+        publicPath: isDevelopment 
+            ? `http://${host}:${port}/`
+            : '/'
     },
     resolve: {
         mainFields: ['browser', 'module', 'main'],
